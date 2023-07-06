@@ -24,7 +24,7 @@ public class OperationsTest {
     }
 
     @Test
-    public void transferToAirstCard() throws InterruptedException {
+    public void transferToFirstCard() {
         var firstCardInfo = getFirstCardInfo();
         var secondCardInfo = getSecondCardInfo();
         var firstCardBalance = personalAccountPage.getCardBalance(0);
@@ -36,14 +36,13 @@ public class OperationsTest {
         loginPage = transferPage.makeValidTransfer(String.valueOf(amount), firstCardInfo);
         var actualBalanceFirstCard = personalAccountPage.getCardBalance(0);
         var actualBalanceSecondCard = personalAccountPage.getCardBalance(1);
-        Thread.sleep(1000);
 
         assertEquals(expectedBalanceFirstCard, actualBalanceFirstCard);
         assertEquals(expectedBalanceSecondCard, actualBalanceSecondCard);
     }
 
     @Test
-    public void TranlationToFirstCard() throws InterruptedException {
+    public void transferToSecondCard() {
         var firstCardInfo = getFirstCardInfo();
         var secondCardInfo = getSecondCardInfo();
         var firstCardBalance = personalAccountPage.getCardBalance(0);
@@ -51,7 +50,6 @@ public class OperationsTest {
         var amount = generateValidAmount(personalAccountPage.getCardBalance(1));
         var expectedBalanceFirstCard = firstCardBalance + amount;
         var expectedBalanceSecondCard = secondCardBalance - amount;
-
         var transferPage = personalAccountPage.selectCardToTransfer(firstCardInfo);
         loginPage = transferPage.makeValidTransfer(String.valueOf(amount), secondCardInfo);
         var actualBalanceFirstCard = personalAccountPage.getCardBalance(0);
@@ -62,17 +60,16 @@ public class OperationsTest {
     }
 
     @Test
-    public void availableTransferAmount() throws InterruptedException {
+    public void availableTransferAmount() {
         var firstCardInfo = getFirstCardInfo();
         var secondCardInfo = getSecondCardInfo();
         var firstCardBalance = personalAccountPage.getCardBalance(0);
         var secondCardBalance = personalAccountPage.getCardBalance(1);
-        var amount = generateInvalidAmount(personalAccountPage.getCardBalance(1));
+        var amount = generateInvalidAmount(personalAccountPage.getCardBalance(0));
         var transferPage = personalAccountPage.selectCardToTransfer(secondCardInfo);
         loginPage = transferPage.makeValidTransfer(String.valueOf(amount), firstCardInfo);
         var actualBalanceFirstCard = personalAccountPage.getCardBalance(0);
         var actualBalanceSecondCard = personalAccountPage.getCardBalance(1);
-        Thread.sleep(5000);
 
         assertEquals(firstCardBalance, actualBalanceFirstCard);
         assertEquals(secondCardBalance, actualBalanceSecondCard);
